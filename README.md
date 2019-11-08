@@ -1,3 +1,3 @@
 # hangman
 
-This is hangman project in beta phase
+This is basic hangman game, created in pure es6
