@@ -1,5 +1,5 @@
 import { check } from "./checkLetter.js";
-import { generateKeyboard, keyboardPlace } from "./keyboard.js";
+import { keyboardPlace } from "./keyboard.js";
 
 let word, health;
 
@@ -35,14 +35,17 @@ const newGame = () => {
   clearGame();
   health = 5;
   lifeCounter.innerText = health;
+  //rozbijamy słowo na litery :)
   word = [...generatePassword()].map((el, i) => {
     return {
       letter: el,
       wasShot: false
     };
-  });
+    
+  }
+  );
 
-  [...word].forEach((el, i) => {
+  word.forEach((el, i) => {
     let line = document.createElement("DIV");
     line.id = i;
     line.classList.add("lines");
@@ -55,13 +58,7 @@ const checkWin = () => {
   let pointsToWin = word.length,
     actualAmountOfPoints = 0;
 
-  word.forEach(letter => {
-    switch (letter.wasShot) {
-      case true:
-        actualAmountOfPoints++;
-        break;
-    }
-  });
+  word.forEach(letter => { if(letter.wasShot) actualAmountOfPoints++});
   if (actualAmountOfPoints == pointsToWin) {
     alert("win");
     newGame();
@@ -71,11 +68,7 @@ const checkWin = () => {
 const changeObject = indexesToChange => {
   indexesToChange.forEach(indexClicked => {
     word.forEach((letter, indexToBeChanged) => {
-      switch (indexClicked) {
-        case indexToBeChanged:
-          word[indexClicked].wasShot = true;
-          break;
-      }
+      if(indexClicked==indexToBeChanged) word[indexClicked].wasShot = true;
     });
   });
   changeHTML(word);
@@ -83,11 +76,7 @@ const changeObject = indexesToChange => {
 
 const changeHTML = word => {
   word.forEach((letter, index) => {
-    switch (letter.wasShot) {
-      case true:
-        passwordPlace.children[index].innerText = letter.letter;
-        break;
-    }
+    if(letter.wasShot) passwordPlace.children[index].innerText = letter.letter;
   });
   checkWin();
 };
@@ -95,11 +84,9 @@ const changeHTML = word => {
 const loseHealth = () => {
   health--;
   lifeCounter.innerText = health;
-  switch (health) {
-    case 0:
+  if(health==0){
       alert("u losed");
       newGame();
-      break;
   }
 };
 
